@@ -8,16 +8,39 @@
 
   document.addEventListener("deviceready", onDeviceReady, false);
     
+
     function onDeviceReady() {
-        var element = document.getElementById('deviceProperties');
-        element.innerHTML = 'Device Name: '     + device.name     + '<br />' +
-                            'Device Cordova: '  + device.cordova  + '<br />' +
-                            'Device Platform: ' + device.platform + '<br />' +
-                            'Device UUID: '     + device.uuid     + '<br />' +
-                            'Device Internet Connection: '     + (inetConnection()?'ON':'OFF')     + '<br />' +
-                            'Device Version: '  + device.version  + '<br />';
+       
+      navigator.geolocation.getCurrentPosition(setCoordinates, setErrorCoordinates);
+      showDeviceParams();
+      navigator.notification.vibrate(100);
+    }
+    
+    function showDeviceParams()
+    {
+      var element = document.getElementById('deviceProperties');
+        element.innerHTML = 'Name: '     + device.name     + '<br />' +
+                            'Cordova: '  + device.cordova  + '<br />' +
+                            'Platform: ' + device.platform + '<br />' +
+                            'Version: '  + device.version  + '<br />' +
+                            'UUID: '     + device.uuid     + '<br />' +
+                            'Internet Connection: '     + (inetConnection()?'ON':'OFF')     + '<br />';
+    }
+    
+     function setCoordinates(position) {
+        var div = document.getElementById('deviceCoordinates');
+
+        div.innerHTML = 'Latitude: '             + position.coords.latitude         + '<br/>' +
+                        'Longitude: '            + position.coords.longitude        + '<br/>' +
+                        'Altitude: '             + position.coords.altitude         + '<br/>' +
+                        'Accuracy: '             + position.coords.accuracy         + '<br/>' +
+                        'Altitude Accuracy: '    + position.coords.altitudeAccuracy + '<br/>' +
+                        'Heading: '              + position.coords.heading          + '<br/>' +
+                        'Speed: '                + position.coords.speed            + '<br/>';
     }
 
+
+    function setErrorCoordinates() {}
 
     function inetConnection() 
     {
@@ -34,6 +57,12 @@
     </script>
   </head>
     <body>
-    <div id="deviceProperties">Loading device properties...</p>
+    <h1>SMT application</h1>
+    <div><h2>Device information</h2>
+     <div id="deviceProperties">Loading device properties...</div>
+    </div>
+    <div><h2>Position</h2>
+     <div id="deviceCoordinates">Loading device coordinates...</div>
+    </div>
   </body>
 </html>
